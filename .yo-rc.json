@@ -1,0 +1,22 @@
+{
+  "generator-phovea": {
+    "type": "lib",
+    "libraries": [
+      "font-awesome"
+    ],
+    "libraryAliases": {},
+    "libraryExternals": [
+      "font-awesome"
+    ],
+    "modules": [
+      "phovea_core"
+    ],
+    "entries": "./index.js",
+    "ignores": [],
+    "extensions": [],
+    "name": "sor_table",
+    "author": "cnobre",
+    "today": "Wed, 19 Apr 2017 14:56:31 GMT",
+    "githubAccount": "cnobre"
+  }
+}
