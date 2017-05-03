@@ -1,5 +1,5 @@
 import * as events from 'phovea_core/src/event';
-import {AppConstants, ChangeTypes} from './app_constants';
+// import {AppConstants, ChangeTypes} from './app_constants';
 // import * as d3 from 'd3';
 import {Config} from './config';
 
@@ -17,6 +17,11 @@ import {curveBasis, curveLinear} from 'd3-shape';
 import {VALUE_TYPE_CATEGORICAL, VALUE_TYPE_INT, VALUE_TYPE_REAL, VALUE_TYPE_STRING} from 'phovea_core/src/datatype';
 
 import {line} from 'd3-shape';
+
+
+
+
+
 
 import {
   PRIMARY_SELECTED,
