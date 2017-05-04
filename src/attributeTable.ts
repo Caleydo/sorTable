@@ -141,14 +141,15 @@ class attributeTable {
   private async build() {
 
     //Height is a function of the current view and so is set in initData();
-    this.width = 1200 - this.margin.left - this.margin.right;
+    this.width = 1800 - this.margin.left - this.margin.right;
     this.height = Config.glyphSize * 3 * this.tableManager.graphTable.nrow; //- this.margin.top - this.margin.bottom;
 
 
     // let t = transition('t').duration(500).ease(easeLinear);
 
     //Exctract y values from dict.
-    const svg = this.$node.append('svg')
+    // const svg = this.$node.append('svg')
+    const svg = select('#graphTable').append('svg')
       .classed('tableSVG', true)
       .attr('width', this.width + this.margin.left + this.margin.right)
       .attr('height', this.height + this.margin.top + this.margin.bottom);
@@ -157,6 +158,27 @@ class attributeTable {
     this.table = svg.append('g')
       .attr('transform', 'translate(' + Config.collapseSlopeChartWidth + ' , 0)')
       .attr('id', 'tableGroup')
+
+
+    //Check for the existence of a header group: (not created by the graph view)
+
+    if (select('#headers').empty()) {
+      const headerSVG = select('#headersDIV').append('svg')
+        .attr('width', 2400)
+        .attr('height',170)
+        .attr('id', 'headers')
+        .attr('transform', 'translate(0,40)')
+
+      // headerSVG.append('rect')
+      //   .attr('width', 1900)
+      //   .attr('height',160)
+      //   .attr('fill','white')
+
+      headerSVG.append('g')
+        .attr('transform', 'translate(' + this.margin.left + ',90)')
+        .attr('id', 'headerGroup');
+    }
+
 
     //HEADERS
     select('#headerGroup').append('g')
@@ -282,13 +304,20 @@ class attributeTable {
     let orderedCols = [];
 
 
-    for (const colName of colOrder) {
-      for (const vector of allCols) {
-        if (vector.desc.name === colName) {
-          orderedCols.push(vector)
+    if (colOrder){
+      for (const colName of colOrder) {
+        for (const vector of allCols) {
+          if (vector.desc.name === colName) {
+            orderedCols.push(vector);
+          }
         }
       }
+    } else {
+      for (const vector of allCols) {
+          orderedCols.push(vector);
+      }
     }
+
 
     //This are the rows that every col in the table should have;
     let graphIDs = await graphView.col(0).names();
@@ -374,6 +403,8 @@ class attributeTable {
     orderedCols.forEach((vector, index) => {
       const data = finishedPromises[index * 5];
       const peopleIDs = finishedPromises[index * 5 + 1];
+
+      console.log('peoleIDs are', peopleIDs)
 
     // for (const vector of orderedCols) {
     // //   orderedCols.forEach(function (vector){
@@ -1716,14 +1747,20 @@ class attributeTable {
    */
   private renderStringCell(element, cellData) {
 
+
+
     let col_width = this.colWidths[cellData.type];
     let rowHeight = this.rowHeight;
 
     let numValues = cellData.data.reduce((a, v) => v ? a + 1 : a, 0);
 
+    console.log('rendering string',cellData.data)
+
     if (numValues === 0) {
       return;
     }
+
+
 
     if (element.selectAll('.string').size() === 0) {
       element
