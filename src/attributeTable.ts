@@ -156,8 +156,9 @@ class attributeTable {
 
     // TABLE (except for slope Chart and first col on the left of the slope chart)
     this.table = svg.append('g')
-      .attr('transform', 'translate(' + Config.collapseSlopeChartWidth + ' , 0)')
+      .attr('transform', 'translate(' + this.margin.left + ' , 0)')
       .attr('id', 'tableGroup')
+
 
 
     //Check for the existence of a header group: (not created by the graph view)
@@ -175,19 +176,21 @@ class attributeTable {
       //   .attr('fill','white')
 
       headerSVG.append('g')
-        .attr('transform', 'translate(' + this.margin.left + ',90)')
+        .attr('transform', 'translate(0,90)')
         .attr('id', 'headerGroup');
     }
 
 
     //HEADERS
     select('#headerGroup').append('g')
-      .attr('transform', 'translate(590, 0)')
+      // .attr('transform', 'translate(590, 0)')
+      .attr('transform', 'translate( 40, 0)')
       .attr('id', 'tableHeaders')
 
     //Column Summaries
     select('#headerGroup').append('g')
-      .attr('transform', 'translate(590, 15)')
+      // .attr('transform', 'translate(590, 15)')
+      .attr('transform', 'translate( ' + this.margin.left + ', 20)')
       .attr('id', 'colSummaries')
 
     //Columns (except for the first)
@@ -197,13 +200,13 @@ class attributeTable {
 
     //Highlight Bars
     select('#columns').append('g')
-      .attr('transform', 'translate(0, ' + this.margin.top + ')')
+      .attr('transform', 'translate(' + this.margin.left + ', ' + this.margin.top + ')')
       .attr('id', 'highlightBars');
 
     //SlopeChart and first col
-    svg.append('g')
-      .attr('transform', 'translate(0, ' + this.margin.top + ')')
-      .attr('id', 'slopeChart')
+    // svg.append('g')
+    //   .attr('transform', 'translate(0, ' + this.margin.top + ')')
+    //   .attr('id', 'slopeChart')
 
     select('#slopeChart').append('g')
       .attr('id', 'firstCol')
@@ -212,81 +215,83 @@ class attributeTable {
       .attr('id', 'slopeLines')
 
 
-    //Add button to slopeChart Div that says 'revert to Tree Order'
-    let button = select('#headers')
-      .append('g')
-      .attr('transform', 'translate(635,70)')
-      .attr('id', 'revertTreeOrder')
-      .attr('visibility', 'hidden')
-      .append('svg');
+    // //Add button to slopeChart Div that says 'revert to Tree Order'
+    // let button = select('#headers')
+    //   .append('g')
+    //   .attr('transform', 'translate(635,70)')
+    //   .attr('id', 'revertTreeOrder')
+    //   .attr('visibility', 'hidden')
+    //   .append('svg');
 
-    button.append('rect')
-      .attr('width', 120)
-      .attr('height', 25)
-      .attr('rx', 10)
-      .attr('ry', 20)
-      .attr('fill', '#b4b3b1')
-      .attr('y', 0)
-      .attr('opacity', .1)
-      .on('click', (d) => {
-
-        this.sortAttribute.state = sortedState.Unsorted;
-
-        selectAll('.sortIcon')
-          .classed('sortSelected', false)
-
-        select('#revertTreeOrder')
-          .attr('visibility', 'hidden')
-
-        let t2 = transition('test').duration(600).ease(easeLinear);
-
-        select('#columns').selectAll('.cell')
-          .transition(t2)
-          .attr('transform', (cell: any) => {
-            return ('translate(0, ' + this.y(this.rowOrder[cell.ind]) + ' )');
-          });
-
-        //translate tableGroup to make room for the slope lines.
-        select('#tableGroup')
-          .transition(t2)
-          .attr('transform', () => {
-            return ('translate(' + Config.collapseSlopeChartWidth + ' ,0)');
-          });
-
-        select('#tableHeaders')
-          .transition(t2)
-          .attr('transform', () => {
-            return ('translate(' + (560 + Config.collapseSlopeChartWidth) + ' ,0)');
-          });
-
-        select('#colSummaries')
-          .transition(t2)
-          .attr('transform', () => {
-            return ('translate(' + (560 + Config.collapseSlopeChartWidth) + ' ,15)');
-          });
-
-
-        selectAll('.slopeLine')
-          .transition(t2)
-          .attr('d', (d: any) => {
-            return this.slopeChart({y: d.y, ind: d.ind, width: Config.collapseSlopeChartWidth})
-          });
-
-        select('#tableGroup').selectAll('.highlightBar')
-          .transition(t2)
-          .attr('y', (d: any) => {
-            return this.y(this.rowOrder[d.i])
-          })
-
-      })
-
-    button.append('text')
-      .classed('histogramLabel', true)
-      .attr('x', 60)
-      .attr('y', 15)
-      .attr('fill', '#757472')
-      .text('Sort by Tree')
-      .attr('text-anchor', 'middle')
+    // button.append('rect')
+    //   .attr('width', 120)
+    //   .attr('height', 25)
+    //   .attr('rx', 10)
+    //   .attr('ry', 20)
+    //   .attr('fill', '#b4b3b1')
+    //   .attr('y', 0)
+    //   .attr('opacity', .1)
+    //   .on('click', (d) => {
+    //
+    //     this.sortAttribute.state = sortedState.Unsorted;
+    //
+    //     selectAll('.sortIcon')
+    //       .classed('sortSelected', false)
+    //
+    //     select('#revertTreeOrder')
+    //       .attr('visibility', 'hidden')
+    //
+    //     let t2 = transition('test').duration(600).ease(easeLinear);
+    //
+    //     select('#columns').selectAll('.cell')
+    //       .transition(t2)
+    //       .attr('transform', (cell: any) => {
+    //         return ('translate(0, ' + this.y(this.rowOrder[cell.ind]) + ' )');
+    //       });
+    //
+    //     //translate tableGroup to make room for the slope lines.
+    //     select('#tableGroup')
+    //       .transition(t2)
+    //       .attr('transform', () => {
+    //         return ('translate(' + Config.collapseSlopeChartWidth + ' ,0)');
+    //       });
+    //
+    //     select('#tableHeaders')
+    //       .transition(t2)
+    //       .attr('transform', () => {
+    //         // return ('translate(' + (560 + Config.collapseSlopeChartWidth) + ' ,0)');
+    //         return ('translate(' + (this.margin.left + Config.collapseSlopeChartWidth) + ' ,0)');
+    //       });
+    //
+    //     select('#colSummaries')
+    //       .transition(t2)
+    //       .attr('transform', () => {
+    //         // return ('translate(' + (560 + Config.collapseSlopeChartWidth) + ' ,15)');
+    //         return ('translate(' + (this.margin.left + Config.collapseSlopeChartWidth) + ' ,15)');
+    //       });
+    //
+    //
+    //     selectAll('.slopeLine')
+    //       .transition(t2)
+    //       .attr('d', (d: any) => {
+    //         return this.slopeChart({y: d.y, ind: d.ind, width: Config.collapseSlopeChartWidth})
+    //       });
+    //
+    //     select('#tableGroup').selectAll('.highlightBar')
+    //       .transition(t2)
+    //       .attr('y', (d: any) => {
+    //         return this.y(this.rowOrder[d.i])
+    //       })
+    //
+    //   })
+    //
+    // button.append('text')
+    //   .classed('histogramLabel', true)
+    //   .attr('x', 60)
+    //   .attr('y', 15)
+    //   .attr('fill', '#757472')
+    //   .text('Sort by Tree')
+    //   .attr('text-anchor', 'middle')
 
 
   }
@@ -1085,23 +1090,23 @@ class attributeTable {
     d.ind = sortedIndexes.indexOf(d.ind);
 
     //translate tableGroup to make room for the slope lines.
-    select('#tableGroup')
-      .transition(t2)
-      .attr('transform', (cell: any) => {
-        return ('translate(' + Config.slopeChartWidth + ' ,0)');
-      });
-
-    select('#tableHeaders')
-      .transition(t2)
-      .attr('transform', (cell: any) => {
-        return ('translate(' + (560 + Config.slopeChartWidth)  + ' ,0)');
-      });
-
-    select('#colSummaries')
-      .transition(t2)
-      .attr('transform', (cell: any) => {
-        return ('translate(' + (560  + Config.slopeChartWidth)  + ' ,15)');
-      });
+      // select('#tableGroup')
+      //   .transition(t2)
+      //   .attr('transform', (cell: any) => {
+      //     return ('translate(' + Config.slopeChartWidth + ' ,0)');
+      //   });
+      //
+      // select('#tableHeaders')
+      //   .transition(t2)
+      //   .attr('transform', (cell: any) => {
+      //     return ('translate(' + (560 + Config.slopeChartWidth)  + ' ,0)');
+      //   });
+      //
+      // select('#colSummaries')
+      //   .transition(t2)
+      //   .attr('transform', (cell: any) => {
+      //     return ('translate(' + (560  + Config.slopeChartWidth)  + ' ,15)');
+      //   });
 
 
     selectAll('.slopeLine')
@@ -1747,8 +1752,6 @@ class attributeTable {
    */
   private renderStringCell(element, cellData) {
 
-
-
     let col_width = this.colWidths[cellData.type];
     let rowHeight = this.rowHeight;
 
@@ -1780,7 +1783,7 @@ class attributeTable {
       }
 
       if (numValues > 1) { //aggregate Row
-        textLabel = '...'
+        textLabel = cellData.data[0].toLowerCase().slice(0, 12);
       }
 
     }
