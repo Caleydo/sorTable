@@ -88,7 +88,7 @@
     "d3-shape": "^1.0.4",
     "d3-transition": "^1.0.0",
     "d3-brush": "^1.0.4",
-    "phovea_core": "github:phovea/phovea_core#develop",
+    "phovea_core": "^2.0.0",
     "font-awesome": "4.6.3"
   },
   "name": "sorTable",
